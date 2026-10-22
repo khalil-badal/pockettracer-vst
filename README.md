@@ -82,6 +82,10 @@ Digital, 350 ms, 35% feedback, 35% mix.
 - [ ] **Tone** tilts dark↔bright on the repeats only (dry stays unaffected).
 - [ ] **Input / Output** gain change level with smooth dB readouts; no clicks.
 
+### UI size
+- [ ] Opens at **Small** (720x424, default). Right-click anywhere on the plugin to
+      choose **Small**, **Medium** (1.25x) or **Large** (1.5x). The current size is ticked.
+
 ### Delay types (listen for the distinct character of each)
 - [ ] **Digital** — clean, identical repeats.
 - [ ] **Analog** — repeats get progressively darker; subtle grit; gentle drift with Mod up.
@@ -99,10 +103,11 @@ Digital, 350 ms, 35% feedback, 35% mix.
 - [ ] **Ping-Pong** (stereo track): repeats bounce L↔R.
 - [ ] **Freeze**: engaging holds the current buffer looping indefinitely; smooth
       crossfade in/out; no runaway, no decay while held.
-- [ ] **Feedback safety (important):** push Feedback past 100% (up to 110%) and
-      let it self-oscillate. It should swell to a **stable sustained** level and
-      hold — **not** build to clipping/blow up. Try slamming it to 110% with loud
-      input; output must stay bounded (the tanh + ceiling limiter catches it).
+- [ ] **Feedback safety (important):** Feedback runs 0–100% and is tapered
+      internally (loop gain caps well below unity), so repeats always decay.
+      Digital repeats also lose a little top end each pass (8 kHz one-pole) for a
+      natural, lead-playing-friendly decay. Slam it to 100% with loud input; output
+      must stay bounded (tanh + ceiling limiter as a backstop).
 
 ### Session recall
 - [ ] Save the Reaper project, reload it, confirm all parameters restore.
@@ -113,13 +118,23 @@ Digital, 350 ms, 35% feedback, 35% mix.
 
 ```
 CMakeLists.txt
+Assets/Fonts/                 OpenDyslexic (embedded via BinaryData; used for all UI text)
 Source/
   PluginProcessor.{cpp,h}     APVTS, signal flow, I/O gain, equal-power mix
-  PluginEditor.{cpp,h}        GUI (PTKnob / PTTypeButton / PTToggle, motif)
+  PluginEditor.{cpp,h}        GUI (PTKnob / PTTypeButton / PTToggle, PluginContent
+                              faceplate, editor host with Small/Medium/Large sizing)
   dsp/
     DelayEngine.{cpp,h}       circular buffer + 6 type implementations + safety
     TiltFilter.{cpp,h}        single-knob tilt Tone
     TempoSync.{cpp,h}         note-division -> ms (fallback 120 BPM)
   gui/
-    PocketTracerLookAndFeel.{cpp,h}  royal-blue/black chrome knobs
+    PocketTracerLookAndFeel.{cpp,h}  royal-blue/black knobs, background, fonts
 ```
+
+---
+
+## 6. Fonts
+
+All UI text is set in [OpenDyslexic](https://opendyslexic.org/) (`Assets/Fonts/`),
+embedded into the binary through `juce_add_binary_data`. The Inter and Barlow
+Condensed files are kept in `Assets/Fonts/` but are no longer linked.
