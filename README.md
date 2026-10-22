@@ -4,6 +4,8 @@ A multi-mode delay plugin by **Khyle Audio**. Six delay character types (Digital
 Analog, Tape, Reverse, Lo-Fi, Multi-Tap) in one unit, with tempo sync, ping-pong,
 freeze, a single-knob tilt Tone, type-appropriate modulation, and input/output gain.
 
+![Pocket Tracer UI](<Pocket Tracer UI.png>)
+
 - **Formats:** VST3 + Standalone
 - **Architecture:** Windows x64
 - **Built with:** JUCE 8 / CMake / MSVC (Visual Studio Build Tools 2022)
